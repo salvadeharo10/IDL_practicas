@@ -1,0 +1,31 @@
+No CUDA runtime is found, using CUDA_HOME='/usr/local/cuda'
+2025-03-15 10:35:59,863 - launch.py - accelerate.commands.launch - WARNING - The following values were not passed to `accelerate launch` and had defaults used instead:
+	`--num_cpu_threads_per_process` was set to `2` to improve out-of-box performance when training on CPUs
+To avoid this warning pass in values for each of the problematic parameters or run `accelerate config`.
+Some weights of BartForSequenceClassification were not initialized from the model checkpoint at facebook/bart-large and are newly initialized: ['classification_head.dense.bias', 'classification_head.dense.weight', 'classification_head.out_proj.bias', 'classification_head.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+No CUDA runtime is found, using CUDA_HOME='/usr/local/cuda'
+/opt/conda/lib/python3.12/site-packages/torch/autograd/graph.py:823: UserWarning: aten::layer_norm: an autograd kernel was not registered to the Autograd key(s) but we are trying to backprop through it. This may lead to silently incorrect behavior. This behavior is deprecated and will be removed in a future version of PyTorch. If your operator is differentiable, please ensure you have registered an autograd kernel to the correct Autograd key (e.g. DispatchKey::Autograd, DispatchKey::CompositeImplicitAutograd). If your operator is not differentiable, or to squash this warning and use the previous behavior, please register torch::CppFunction::makeFallthrough() to DispatchKey::Autograd. (Triggered internally at /pytorch/torch/csrc/autograd/autograd_not_implemented_fallback.cpp:62.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+ERROR:2025-03-15 10:40:20 2579:2579 DeviceProperties.cpp:47] gpuGetDeviceCount failed with code 35
+Epoch 1, Loss: 0.7171
+Epoch 2, Loss: 0.6755
+Epoch 3, Loss: 0.6696
+Training completed.
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                torch_ipex::ipex_linear        29.94%       74.303s        78.03%      193.675s      24.782ms          7815  
+autograd::engine::evaluate_function: torch::autograd...         0.04%      99.175ms        61.31%      152.163s      52.290ms          2910  
+torch::autograd::CppNode<torch_ipex::cpu::IPEXLinear...         0.01%      29.498ms        61.27%      152.064s      52.256ms          2910  
+                                 IPEXLinearOp::backward         0.03%      65.206ms        61.25%      152.034s      52.245ms          2910  
+                            torch_ipex::linear_backward        61.09%      151.627s        61.23%      151.969s      52.223ms          2910  
+                                  IPEXLinearOp::forward         0.01%      23.880ms        29.94%       74.312s      25.537ms          2910  
+                                 IPEXLinearOp::_forward         0.00%       6.618ms        29.93%       74.288s      25.529ms          2910  
+                            torch_ipex::adam_fused_step         3.03%        7.522s         3.03%        7.522s     973.733us          7725  
+                                            aten::fill_         1.65%        4.099s         1.65%        4.099s     979.073us          4187  
+                                            aten::zero_         0.00%       5.870ms         1.65%        4.091s       1.925ms          2125  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 248.201s
+
