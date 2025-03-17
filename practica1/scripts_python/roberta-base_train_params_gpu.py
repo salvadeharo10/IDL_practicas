@@ -1,9 +1,19 @@
+import argparse
 from accelerate import Accelerator, ProfileKwargs
+import time
 import torch
 from transformers import RobertaForSequenceClassification, RobertaTokenizer
 import torch.optim as optim
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
+from utils import trace_handler_gpu
+
+# Argument parser para recibir parámetros desde el script de ejecución
+parser = argparse.ArgumentParser(description="Entrenar RoBERTa en CPU con parámetros configurables.")
+parser.add_argument("--batch_size", type=int, default=8, help="Tamaño del lote (batch size)")
+parser.add_argument("--seq_length", type=int, default=512, help="Longitud de la secuencia")
+
+args = parser.parse_args()
 
 # Load RoBERTa model and tokenizer
 model_name = "roberta-base"
@@ -15,8 +25,8 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.00001)
 
 # Create a batch of random tokenized sentences (batch size 16, sequence length 512)
-batch_size = 8
-seq_length = 512
+batch_size = args.batch_size
+seq_length = args.seq_length
 input_ids = torch.randint(0, tokenizer.vocab_size, (batch_size, seq_length - 1))
 pad_tokens = torch.full((batch_size, 1), tokenizer.pad_token_id)  # Añadir <pad> al final
 input_ids = torch.cat([input_ids, pad_tokens], dim=1)
@@ -26,14 +36,17 @@ labels = torch.randint(0, 2, (batch_size,))  # Random labels for binary classifi
 dataset = TensorDataset(input_ids, attention_mask, labels)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
-# Define profiling kwargs for CPU activities
+# Configurar el perfilado de GPU
 profile_kwargs = ProfileKwargs(
-    activities=["cpu"],  # Profile CPU activities instead of CUDA
-    record_shapes=True
+    activities=["cuda"],  # Registrar actividades de GPU
+    record_shapes=True,
+    profile_memory=True,
+    with_flops = True,
+    on_trace_ready = trace_handler_gpu
 )
 
 # Initialize the accelerator for CPU
-accelerator = Accelerator(cpu=True, kwargs_handlers=[profile_kwargs])
+accelerator = Accelerator(cpu=False, kwargs_handlers=[profile_kwargs])
 
 # Prepare the model, optimizer, and data loader for CPU execution
 model, optimizer, dataloader = accelerator.prepare(model, optimizer, dataloader)
@@ -45,6 +58,7 @@ device = accelerator.device
 
 # Training loop
 num_epochs = 3
+start_time = time.time()
 with accelerator.profile() as prof:
     for epoch in range(num_epochs):
         running_loss = 0.0
@@ -62,6 +76,10 @@ with accelerator.profile() as prof:
             running_loss += loss.item()
         print(f"Epoch {epoch+1}, Loss: {running_loss/len(dataloader):.4f}")
 
+end_time = time.time()
+total_training_time = end_time - start_time
+
 # Print profiling results
 print("Training completed.")
-print(prof.key_averages().table(sort_by="cpu_time_total", row_limit=10))
+#print(prof.key_averages().table(sort_by="cuda_time_total", row_limit=10))
+print(f"Training time without initializations: {total_training_time:.2f} seconds.")

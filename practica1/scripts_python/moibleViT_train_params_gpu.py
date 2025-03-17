@@ -1,9 +1,19 @@
+import argparse
 from accelerate import Accelerator, ProfileKwargs
 import torch
+import time
 import torch.optim as optim
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 from transformers import MobileViTFeatureExtractor, MobileViTForImageClassification
+from utils import trace_handler_gpu
+
+# Argument parser para recibir parámetros desde el script de ejecución
+parser = argparse.ArgumentParser(description="Entrenar RoBERTa en CPU con parámetros configurables.")
+parser.add_argument("--batch_size", type=int, default=8, help="Tamaño del lote (batch size)")
+parser.add_argument("--img_size", type=int, default=256, help="Longitud de la secuencia")
+
+args = parser.parse_args()
 
 # Cargar el modelo MobileViT
 model_name = "apple/mobilevit-small"
@@ -19,9 +29,9 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.0001)
 
 # Configuración de datos de entrenamiento
-batch_size = 16
+batch_size = args.batch_size
 num_classes = 10
-image_size = 256  # Tamaño de imagen esperado por MobileViT
+image_size = args.img_size  # Tamaño de imagen esperado por MobileViT
 num_channels = 3  # Imágenes RGB
 
 # Crear imágenes aleatorias y etiquetas aleatorias
@@ -34,7 +44,11 @@ dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 # Configurar el perfilado de GPU
 profile_kwargs = ProfileKwargs(
     activities=["cuda"],  # Registrar actividades de GPU
-    record_shapes=True
+    record_shapes=True,
+    profile_memory=True,
+    with_flops = True,
+    schedule_option={"wait": 5, "warmup": 1, "active": 3, "repeat": 2, "skip_first": 1},
+    on_trace_ready = trace_handler_gpu
 )
 
 # Inicializar Accelerator para optimizar en GPU
@@ -49,6 +63,7 @@ device = accelerator.device
 
 # Bucle de entrenamiento
 num_epochs = 3
+start_time = time.time()
 with accelerator.profile() as prof:
     for epoch in range(num_epochs):
         running_loss = 0.0
@@ -66,6 +81,10 @@ with accelerator.profile() as prof:
         
         print(f"Epoch {epoch+1}, Loss: {running_loss / len(dataloader):.4f}")
 
+end_time = time.time()
+total_training_time = end_time - start_time
+
 # Imprimir resultados del perfilado
 print("Training completed.")
-print(prof.key_averages().table(sort_by="cuda_time_total", row_limit=10))
+#print(prof.key_averages().table(sort_by="cuda_time_total", row_limit=10))
+print(f"Training time without initializations: {total_training_time:.2f} seconds.")

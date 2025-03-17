@@ -8,7 +8,11 @@
 #SBATCH --mail-type=ALL   # Notificaciones por correo en inicio, fin y fallos
 #SBATCH --mail-user=salvadorde.haroo@um.es
 
+# Parámetros de configuración
+BATCH_SIZE=16
+IMG_SIZE=256
 
 # Ejecutar el script de Python dentro del contenedor Singularity (Apptainer)
-apptainer exec --writable-tmpfs /software/singularity/Informatica/mia-idl-apptainer/mia_idl_2.1.sif \
-accelerate launch --config_file /home/salvadordeharoo/IDL/practica1/scripts_python/config_cpubase.yaml /home/salvadordeharoo/IDL/practica1/scripts_python/mobileViT-train_cpu.py
+time apptainer exec --writable-tmpfs /software/singularity/Informatica/mia-idl-apptainer/mia_idl_2.1.sif \
+accelerate launch --config_file /home/salvadordeharoo/IDL/practica1/scripts_python/config_cpubase.yaml /home/salvadordeharoo/IDL/practica1/scripts_python/mobileViT-train_params_cpu.py \
+--batch_size $BATCH_SIZE --img_size $IMG_SIZE
