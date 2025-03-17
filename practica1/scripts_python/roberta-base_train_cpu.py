@@ -1,14 +1,14 @@
 from accelerate import Accelerator, ProfileKwargs
 import torch
-from transformers import BartForSequenceClassification, BartTokenizer
+from transformers import RobertaForSequenceClassification, RobertaTokenizer
 import torch.optim as optim
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 
-# Load BART model and tokenizer
-model_name = "facebook/bart-base"
-model = BartForSequenceClassification.from_pretrained(model_name, num_labels=2)  # Binary classification example
-tokenizer = BartTokenizer.from_pretrained(model_name)
+# Load RoBERTa model and tokenizer
+model_name = "roberta-base"
+model = RobertaForSequenceClassification.from_pretrained(model_name, num_labels=2)  # Binary classification example
+tokenizer = RobertaTokenizer.from_pretrained(model_name)
 
 # Define loss function and optimizer
 criterion = nn.CrossEntropyLoss()
@@ -16,11 +16,11 @@ optimizer = optim.Adam(model.parameters(), lr=0.00001)
 
 # Create a batch of random tokenized sentences (batch size 16, sequence length 512)
 batch_size = 8
-seq_length = 128
+seq_length = 512
 input_ids = torch.randint(0, tokenizer.vocab_size, (batch_size, seq_length - 1))
-eos_tokens = torch.full((batch_size, 1), tokenizer.eos_token_id)  # Añadir <eos> al final
-input_ids = torch.cat([input_ids, eos_tokens], dim=1)
-attention_mask = torch.ones_like(input_ids)  # Assume all tokens are attended to
+pad_tokens = torch.full((batch_size, 1), tokenizer.pad_token_id)  # Añadir <pad> al final
+input_ids = torch.cat([input_ids, pad_tokens], dim=1)
+attention_mask = (input_ids != tokenizer.pad_token_id).long()  # Máscara de atención válida
 labels = torch.randint(0, 2, (batch_size,))  # Random labels for binary classification
 
 dataset = TensorDataset(input_ids, attention_mask, labels)
