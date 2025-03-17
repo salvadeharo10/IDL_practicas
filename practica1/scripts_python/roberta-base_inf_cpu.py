@@ -8,7 +8,7 @@ model = RobertaModel.from_pretrained(model_name)
 tokenizer = RobertaTokenizer.from_pretrained(model_name)
 
 # Create a large batch of random long sentences (batch size 128, sequence length 512)
-batch_size = 128  # Reduced for CPU efficiency
+batch_size = 8  # Reduced for CPU efficiency
 seq_length = 512
 
 # Generate random token IDs within the model's vocabulary size
