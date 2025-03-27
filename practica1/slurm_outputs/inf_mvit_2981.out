@@ -1,0 +1,24 @@
+No CUDA runtime is found, using CUDA_HOME='/usr/local/cuda'
+2025-03-27 10:04:55,826 - launch.py - accelerate.commands.launch - WARNING - The following values were not passed to `accelerate launch` and had defaults used instead:
+	`--num_cpu_threads_per_process` was set to `2` to improve out-of-box performance when training on CPUs
+To avoid this warning pass in values for each of the problematic parameters or run `accelerate config`.
+/opt/conda/lib/python3.12/site-packages/transformers/models/mobilevit/feature_extraction_mobilevit.py:28: FutureWarning: The class MobileViTFeatureExtractor is deprecated and will be removed in version 5 of Transformers. Please use MobileViTImageProcessor instead.
+  warnings.warn(
+Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+ERROR:2025-03-27 10:05:31 2616:2616 DeviceProperties.cpp:47] gpuGetDeviceCount failed with code 35
+--------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                            Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg    # of Calls  
+--------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                    aten::conv2d         0.02%       5.661ms       100.19%       30.598s     437.120ms            70  
+               aten::convolution         0.00%     487.039us        50.02%       15.276s     436.453ms            35  
+              aten::_convolution         0.01%       2.129ms        50.01%       15.275s     436.439ms            35  
+        aten::mkldnn_convolution        50.00%       15.272s        50.01%       15.273s     436.378ms            35  
+                    aten::linear         0.01%       4.435ms        44.53%       13.600s     123.638ms           110  
+                     aten::addmm        21.36%        6.523s        22.23%        6.790s     123.447ms            55  
+                      aten::silu         8.48%        2.590s         8.48%        2.590s      76.177ms            34  
+                    aten::matmul         0.03%      10.256ms         7.20%        2.198s     122.118ms            18  
+                       aten::bmm         6.55%        2.001s         6.55%        2.001s     111.173ms            18  
+                aten::batch_norm         0.00%     241.251us         5.84%        1.784s      55.757ms            32  
+--------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 30.542s
+

@@ -1,6 +1,14 @@
 from accelerate import Accelerator, ProfileKwargs
 import torch
 from transformers import MobileViTFeatureExtractor, MobileViTForImageClassification
+import argparse
+
+# Argument parser para recibir parámetros desde el script de ejecución
+parser = argparse.ArgumentParser(description="Entrenar MobileViT en CPU con parámetros configurables.")
+parser.add_argument("--batch_size", type=int, default=8, help="Tamaño del lote (batch size)")
+parser.add_argument("--img_size", type=int, default=256, help="Longitud de la secuencia")
+
+args = parser.parse_args()
 
 # Cargar el modelo MobileViT y el feature extractor
 model_name = "apple/mobilevit-small"
@@ -8,8 +16,8 @@ model = MobileViTForImageClassification.from_pretrained(model_name)
 feature_extractor = MobileViTFeatureExtractor.from_pretrained(model_name)
 
 # Configuración del tamaño del lote e imágenes aleatorias (batch size 128, 3 canales RGB, 256x256)
-batch_size = 128
-image_size = 256  # Tamaño de imagen esperado por MobileViT
+batch_size = args.batch_size
+image_size = args.img_size  # Tamaño de imagen esperado por MobileViT
 num_channels = 3  # Imágenes RGB
 
 # Crear imágenes aleatorias (valores normalizados entre 0 y 1)

@@ -4,7 +4,7 @@
 #SBATCH --mem=0     # Sin límite de memoria (usará toda la disponible)
 #SBATCH --nodes=1
 #SBATCH --ntasks=1  # Mantener una única tarea
-#SBATCH --job-name=TrainGPUBART
+#SBATCH --job-name=TrainGPURob
 #SBATCH --output=/home/salvadordeharoo/IDL/practica1/slurm_outputs/train_roberta_gpu_%j.out
 #SBATCH --mail-type=ALL   # Notificaciones por correo en inicio, fin y fallos
 #SBATCH --mail-user=salvadorde.haroo@um.es
