@@ -14,7 +14,7 @@ BATCH_SIZE=16
 SEQ_LENGTH=512
 
 # Ejecutar el script de Python dentro del contenedor Singularity (Apptainer)
-apptainer exec --writable-tmpfs --nv /software/singularity/Informatica/mia-idl-apptainer/mia_idl_2.1.sif \
+apptainer exec --writable-tmpfs --nv /software/singularity/Informatica/mia-idl-apptainer/mia_idl_2.2.sif \
 accelerate launch --config_file /home/salvadordeharoo/IDL/practica1/scripts_python/config_gpubase.yaml \
 /home/salvadordeharoo/IDL/practica1/scripts_python/roberta-base_inf_params_gpu.py \
 --batch_size $BATCH_SIZE --seq_length $SEQ_LENGTH

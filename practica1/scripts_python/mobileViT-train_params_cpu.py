@@ -55,7 +55,7 @@ profile_kwargs = ProfileKwargs(
     record_shapes=True,
     profile_memory=True,
     with_flops = True,
-    schedule_option={"wait": 5, "warmup": 1, "active": 3, "repeat": 2, "skip_first": 1},
+    #schedule_option={"wait": 5, "warmup": 1, "active": 3, "repeat": 2, "skip_first": 1},
     on_trace_ready = trace_handler_cpu
 )
 # Inicializar Accelerator para optimizar en CPU

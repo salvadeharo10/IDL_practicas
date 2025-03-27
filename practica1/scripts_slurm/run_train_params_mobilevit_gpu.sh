@@ -14,6 +14,6 @@ BATCH_SIZE=16
 IMG_SIZE=256
 
 # Ejecutar el script de Python dentro del contenedor Singularity (Apptainer)
-time apptainer exec --writable-tmpfs --nv /software/singularity/Informatica/mia-idl-apptainer/mia_idl_2.1.sif \
+time apptainer exec --writable-tmpfs --nv /software/singularity/Informatica/mia-idl-apptainer/mia_idl_2.2.sif \
 accelerate launch --config_file /home/salvadordeharoo/IDL/practica1/scripts_python/config_gpubase.yaml /home/salvadordeharoo/IDL/practica1/scripts_python/mobileViT_train_params_gpu.py \
 --batch_size $BATCH_SIZE --img_size $IMG_SIZE

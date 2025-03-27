@@ -1,0 +1,34 @@
+Some weights of MobileViTForImageClassification were not initialized from the model checkpoint at apple/mobilevit-small and are newly initialized because the shapes did not match:
+- classifier.weight: found shape torch.Size([1000, 640]) in the checkpoint and torch.Size([10, 640]) in the model instantiated
+- classifier.bias: found shape torch.Size([1000]) in the checkpoint and torch.Size([10]) in the model instantiated
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/opt/conda/lib/python3.12/site-packages/transformers/models/mobilevit/feature_extraction_mobilevit.py:28: FutureWarning: The class MobileViTFeatureExtractor is deprecated and will be removed in version 5 of Transformers. Please use MobileViTImageProcessor instead.
+  warnings.warn(
+Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+[W327 11:01:43.126015665 collection.cpp:992] Warning: Failed to recover relationship between all profiler and kineto events: 116996 vs. 0  reassociated. (function reassociate)
+Epoch 1, Loss: 2.3093
+Epoch 2, Loss: 2.2538
+Epoch 3, Loss: 2.2152
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg       CPU Mem  Self CPU Mem      CUDA Mem  Self CUDA Mem    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+void magma_sgemmEx_kernel<float, __nv_bfloat16, __nv...         0.00%       0.000us         0.00%       0.000us       0.000us        7.110s        56.08%        7.110s     455.798us           0 b           0 b           0 b           0 b         15600  
+void magma_sgemmEx_kernel<float, __nv_bfloat16, __nv...         0.00%       0.000us         0.00%       0.000us       0.000us        1.581s        12.47%        1.581s     104.388us           0 b           0 b           0 b           0 b         15150  
+void magma_sgemmEx_kernel<float, __nv_bfloat16, __nv...         0.00%       0.000us         0.00%       0.000us       0.000us        1.403s        11.06%        1.403s      92.779us           0 b           0 b           0 b           0 b         15120  
+void at::native::col2im_kernel<c10::BFloat16, float>...         0.00%       0.000us         0.00%       0.000us       0.000us     360.661ms         2.84%     360.661ms      27.829us           0 b           0 b           0 b           0 b         12960  
+void at::native::batch_norm_backward_kernel<c10::BFl...         0.00%       0.000us         0.00%       0.000us       0.000us     353.863ms         2.79%     353.863ms     368.608us           0 b           0 b           0 b           0 b           960  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     137.807ms         1.09%     137.807ms     148.180us           0 b           0 b           0 b           0 b           930  
+void at::native::(anonymous namespace)::conv_depthwi...         0.00%       0.000us         0.00%       0.000us       0.000us     126.177ms         1.00%     126.177ms       1.051ms           0 b           0 b           0 b           0 b           120  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     123.441ms         0.97%     123.441ms      18.369us           0 b           0 b           0 b           0 b          6720  
+void at::native::batch_norm_transform_input_kernel<c...         0.00%       0.000us         0.00%       0.000us       0.000us     114.173ms         0.90%     114.173ms     118.930us           0 b           0 b           0 b           0 b           960  
+void at::native::(anonymous namespace)::conv_depthwi...         0.00%       0.000us         0.00%       0.000us       0.000us     113.318ms         0.89%     113.318ms     539.609us           0 b           0 b           0 b           0 b           210  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 11.363s
+Self CUDA time total: 12.680s
+
+Training completed.
+Training time without initializations: 36.05 seconds.
+
+real	0m57.154s
+user	0m46.472s
+sys	0m9.065s

@@ -1,0 +1,70 @@
+SyntaxError: Non-UTF-8 code starting with '\xe1' in file /home/salvadordeharoo/IDL/practica1/scripts_python/mobileViT_train_params_multi_gpu.py on line 11, but no encoding declared; see https://peps.python.org/pep-0263/ for details
+SyntaxError: Non-UTF-8 code starting with '\xe1' in file /home/salvadordeharoo/IDL/practica1/scripts_python/mobileViT_train_params_multi_gpu.py on line 11, but no encoding declared; see https://peps.python.org/pep-0263/ for details
+SyntaxError: Non-UTF-8 code starting with '\xe1' in file /home/salvadordeharoo/IDL/practica1/scripts_python/mobileViT_train_params_multi_gpu.py on line 11, but no encoding declared; see https://peps.python.org/pep-0263/ for details
+SyntaxError: Non-UTF-8 code starting with '\xe1' in file /home/salvadordeharoo/IDL/practica1/scripts_python/mobileViT_train_params_multi_gpu.py on line 11, but no encoding declared; see https://peps.python.org/pep-0263/ for details
+SyntaxError: Non-UTF-8 code starting with '\xe1' in file /home/salvadordeharoo/IDL/practica1/scripts_python/mobileViT_train_params_multi_gpu.py on line 11, but no encoding declared; see https://peps.python.org/pep-0263/ for details
+E0327 11:58:25.421000 2474 site-packages/torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 0 (pid: 2520) of binary: /opt/conda/bin/python
+Traceback (most recent call last):
+  File "/opt/conda/bin/accelerate", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/opt/conda/lib/python3.12/site-packages/accelerate/commands/accelerate_cli.py", line 48, in main
+    args.func(args)
+  File "/opt/conda/lib/python3.12/site-packages/accelerate/commands/launch.py", line 1185, in launch_command
+    multi_gpu_launcher(args)
+  File "/opt/conda/lib/python3.12/site-packages/accelerate/commands/launch.py", line 810, in multi_gpu_launcher
+    distrib_run.run(args)
+  File "/opt/conda/lib/python3.12/site-packages/torch/distributed/run.py", line 909, in run
+    elastic_launch(
+  File "/opt/conda/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+/home/salvadordeharoo/IDL/practica1/scripts_python/mobileViT_train_params_multi_gpu.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2025-03-27_11:58:25
+  host      : atlas-cola03-c03g01-0.c.scc-cloud-377009.internal
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 2521)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[2]:
+  time      : 2025-03-27_11:58:25
+  host      : atlas-cola03-c03g01-0.c.scc-cloud-377009.internal
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 2522)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[3]:
+  time      : 2025-03-27_11:58:25
+  host      : atlas-cola03-c03g01-0.c.scc-cloud-377009.internal
+  rank      : 3 (local_rank: 3)
+  exitcode  : 1 (pid: 2523)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[4]:
+  time      : 2025-03-27_11:58:25
+  host      : atlas-cola03-c03g01-0.c.scc-cloud-377009.internal
+  rank      : 4 (local_rank: 4)
+  exitcode  : 1 (pid: 2524)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-03-27_11:58:25
+  host      : atlas-cola03-c03g01-0.c.scc-cloud-377009.internal
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 2520)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+
+real	0m16.340s
+user	0m10.021s
+sys	0m3.635s
