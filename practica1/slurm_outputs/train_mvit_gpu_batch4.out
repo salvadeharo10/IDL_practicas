@@ -1,0 +1,45 @@
+[2025-03-28 13:36:26,983] [INFO] [real_accelerator.py:222:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+Some weights of MobileViTForImageClassification were not initialized from the model checkpoint at apple/mobilevit-small and are newly initialized because the shapes did not match:
+- classifier.weight: found shape torch.Size([1000, 640]) in the checkpoint and torch.Size([10, 640]) in the model instantiated
+- classifier.bias: found shape torch.Size([1000]) in the checkpoint and torch.Size([10]) in the model instantiated
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/opt/conda/lib/python3.12/site-packages/transformers/models/mobilevit/feature_extraction_mobilevit.py:28: FutureWarning: The class MobileViTFeatureExtractor is deprecated and will be removed in version 5 of Transformers. Please use MobileViTImageProcessor instead.
+  warnings.warn(
+Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+[W328 13:36:44.354480985 collection.cpp:992] Warning: Failed to recover relationship between all profiler and kineto events: 357080 vs. 0  reassociated. (function reassociate)
+Epoch 1, Loss: 2.2993
+Epoch 2, Loss: 2.2548
+Epoch 3, Loss: 2.1976
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg       CPU Mem  Self CPU Mem      CUDA Mem  Self CUDA Mem    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+void magma_sgemmEx_kernel<float, __nv_bfloat16, __nv...         0.00%       0.000us         0.00%       0.000us       0.000us        1.386s        39.52%        1.386s      82.983us           0 b           0 b           0 b           0 b         16704  
+void magma_sgemmEx_kernel<float, __nv_bfloat16, __nv...         0.00%       0.000us         0.00%       0.000us       0.000us     839.109ms        23.92%     839.109ms      50.234us           0 b           0 b           0 b           0 b         16704  
+void magma_sgemmEx_kernel<float, __nv_bfloat16, __nv...         0.00%       0.000us         0.00%       0.000us       0.000us     451.644ms        12.88%     451.644ms      25.992us           0 b           0 b           0 b           0 b         17376  
+void at::native::col2im_kernel<c10::BFloat16, float>...         0.00%       0.000us         0.00%       0.000us       0.000us      97.589ms         2.78%      97.589ms       9.413us           0 b           0 b           0 b           0 b         10368  
+void at::native::batch_norm_backward_kernel<c10::BFl...         0.00%       0.000us         0.00%       0.000us       0.000us      68.310ms         1.95%      68.310ms      22.236us           0 b           0 b           0 b           0 b          3072  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us      64.922ms         1.85%      64.922ms       3.019us           0 b           0 b           0 b           0 b         21504  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      42.759ms         1.22%      42.759ms       1.980us           0 b           0 b           0 b           0 b         21600  
+void at::native::reduce_kernel<128, 4, at::native::R...         0.00%       0.000us         0.00%       0.000us       0.000us      39.400ms         1.12%      39.400ms       7.600us           0 b           0 b           0 b           0 b          5184  
+void at::native::batch_norm_collect_statistics_kerne...         0.00%       0.000us         0.00%       0.000us       0.000us      33.965ms         0.97%      33.965ms      11.056us           0 b           0 b           0 b           0 b          3072  
+void at::native::(anonymous namespace)::multi_tensor...         0.00%       0.000us         0.00%       0.000us       0.000us      33.205ms         0.95%      33.205ms      57.648us           0 b           0 b           0 b           0 b           576  
+void at::native::(anonymous namespace)::conv_depthwi...         0.00%       0.000us         0.00%       0.000us       0.000us      29.114ms         0.83%      29.114ms      43.324us           0 b           0 b           0 b           0 b           672  
+void at::native::im2col_kernel<c10::BFloat16>(long, ...         0.00%       0.000us         0.00%       0.000us       0.000us      27.746ms         0.79%      27.746ms       5.161us           0 b           0 b           0 b           0 b          5376  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      27.084ms         0.77%      27.084ms       9.101us           0 b           0 b           0 b           0 b          2976  
+void at::native::(anonymous namespace)::conv_depthwi...         0.00%       0.000us         0.00%       0.000us       0.000us      25.936ms         0.74%      25.936ms      67.543us           0 b           0 b           0 b           0 b           384  
+void at::native::(anonymous namespace)::multi_tensor...         0.00%       0.000us         0.00%       0.000us       0.000us      25.689ms         0.73%      25.689ms      44.598us           0 b           0 b           0 b           0 b           576  
+void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      25.102ms         0.72%      25.102ms       3.113us           0 b           0 b           0 b           0 b          8064  
+void at::native::(anonymous namespace)::multi_tensor...         0.00%       0.000us         0.00%       0.000us       0.000us      24.924ms         0.71%      24.924ms      64.906us           0 b           0 b           0 b           0 b           384  
+void at::native::(anonymous namespace)::conv_depthwi...         0.00%       0.000us         0.00%       0.000us       0.000us      22.775ms         0.65%      22.775ms      33.892us           0 b           0 b           0 b           0 b           672  
+void at::native::(anonymous namespace)::conv_depthwi...         0.00%       0.000us         0.00%       0.000us       0.000us      19.730ms         0.56%      19.730ms      68.508us           0 b           0 b           0 b           0 b           288  
+void at::native::batch_norm_transform_input_kernel<c...         0.00%       0.000us         0.00%       0.000us       0.000us      19.424ms         0.55%      19.424ms       6.323us           0 b           0 b           0 b           0 b          3072  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 2.555s
+Self CUDA time total: 3.508s
+
+Training completed.
+Training time without initializations: 57.15 seconds.
+
+real	1m26.817s
+user	1m13.440s
+sys	0m8.054s

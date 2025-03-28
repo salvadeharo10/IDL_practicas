@@ -1,0 +1,49 @@
+[2025-03-28 13:32:09,170] [WARNING] [_logger.py:72:warning] Setting accelerator to CPU. If you have GPU or other accelerator, we were unable to detect it.
+[2025-03-28 13:32:09,172] [INFO] [real_accelerator.py:222:get_accelerator] Setting ds_accelerator to cpu (auto detect)
+No CUDA runtime is found, using CUDA_HOME='/usr/local/cuda'
+2025-03-28 13:32:11,297 - launch.py - accelerate.commands.launch - WARNING - The following values were not passed to `accelerate launch` and had defaults used instead:
+	`--num_cpu_threads_per_process` was set to `2` to improve out-of-box performance when training on CPUs
+To avoid this warning pass in values for each of the problematic parameters or run `accelerate config`.
+Some weights of MobileViTForImageClassification were not initialized from the model checkpoint at apple/mobilevit-small and are newly initialized because the shapes did not match:
+- classifier.weight: found shape torch.Size([1000, 640]) in the checkpoint and torch.Size([10, 640]) in the model instantiated
+- classifier.bias: found shape torch.Size([1000]) in the checkpoint and torch.Size([10]) in the model instantiated
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/opt/conda/lib/python3.12/site-packages/transformers/models/mobilevit/feature_extraction_mobilevit.py:28: FutureWarning: The class MobileViTFeatureExtractor is deprecated and will be removed in version 5 of Transformers. Please use MobileViTImageProcessor instead.
+  warnings.warn(
+Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+ERROR:2025-03-28 13:34:10 3261:3261 DeviceProperties.cpp:47] gpuGetDeviceCount failed with code 35
+Epoch 1, Loss: 2.3077
+Epoch 2, Loss: 2.2519
+Epoch 3, Loss: 2.1980
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg       CPU Mem  Self CPU Mem    # of Calls  Total MFLOPs  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+autograd::engine::evaluate_function: ConvolutionBack...         0.08%      91.576ms        61.13%       66.948s      19.925ms      -2.55 Gb      -5.33 Gb          3360            --  
+                                   ConvolutionBackward0         0.03%      36.977ms        61.00%       66.814s      19.885ms       2.75 Gb           0 b          3360            --  
+                             aten::convolution_backward        60.88%       66.684s        60.97%       66.777s      19.874ms       2.75 Gb           0 b          3360            --  
+                                           aten::conv2d         0.06%      61.434ms        17.49%       19.151s       2.850ms       5.14 Gb           0 b          6720    419463.954  
+                                           aten::linear         0.13%     141.201ms        10.14%       11.105s       1.052ms       1.87 Gb           0 b         10560            --  
+    autograd::engine::evaluate_function: AddmmBackward0         0.11%     122.574ms         9.59%       10.506s       1.990ms    -489.92 Mb      -1.67 Gb          5280            --  
+                                         AddmmBackward0         0.13%     147.212ms         9.29%       10.170s       1.926ms       1.19 Gb           0 b          5280            --  
+                                               aten::mm         9.02%        9.875s         9.02%        9.880s     935.612us       1.19 Gb       1.19 Gb         10560    280407.441  
+                                      aten::convolution         0.04%      47.216ms         8.61%        9.427s       2.806ms       2.37 Gb           0 b          3360            --  
+                                     aten::_convolution         0.03%      33.188ms         8.56%        9.380s       2.792ms       2.37 Gb           0 b          3360            --  
+                               aten::mkldnn_convolution         8.49%        9.298s         8.53%        9.346s       2.782ms       2.37 Gb           0 b          3360            --  
+                                            aten::addmm         4.54%        4.975s         4.69%        5.134s     972.399us     689.07 Mb     689.07 Mb          5280    140203.721  
+                               Optimizer.step#Adam.step         1.08%        1.187s         4.27%        4.679s      48.738ms      37.72 Mb      -3.54 Gb            96            --  
+                                            aten::copy_         1.79%        1.962s         1.79%        1.962s      13.717us           0 b           0 b        143040            --  
+                                               aten::to         0.18%     191.934ms         1.76%        1.931s      14.951us       2.69 Gb           0 b        129179            --  
+                                         aten::_to_copy         0.53%     585.327ms         1.59%        1.739s      13.542us       2.69 Gb          20 b        128448            --  
+autograd::engine::evaluate_function: NativeBatchNorm...         0.05%      56.965ms         1.52%        1.669s     543.438us      -2.24 Gb      -4.58 Gb          3072            --  
+                                              aten::bmm         1.50%        1.648s         1.51%        1.650s     318.299us     610.88 Mb     610.88 Mb          5184     25579.487  
+                               NativeBatchNormBackward0         0.03%      35.985ms         1.47%        1.612s     524.895us       2.34 Gb           0 b          3072            --  
+                       aten::native_batch_norm_backward         1.38%        1.516s         1.44%        1.576s     513.181us       2.34 Gb      -2.33 Gb          3072            --  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 109.526s
+
+Training completed.
+Training time without initializations: 258.43 seconds.
+
+real	4m59.966s
+user	4m47.674s
+sys	0m11.208s

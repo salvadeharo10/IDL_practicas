@@ -11,7 +11,7 @@
 
 # Parámetros de configuración
 BATCH_SIZE=16
-IMG_SIZE=256
+IMG_SIZE=128
 
 # Ejecutar el script de Python dentro del contenedor Singularity (Apptainer)
 time apptainer exec --writable-tmpfs --nv /software/singularity/Informatica/mia-idl-apptainer/mia_idl_2.2.sif \

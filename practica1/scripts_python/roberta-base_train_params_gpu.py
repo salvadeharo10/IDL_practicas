@@ -6,7 +6,7 @@ from transformers import RobertaForSequenceClassification, RobertaTokenizer
 import torch.optim as optim
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
-from utils import trace_handler_gpu
+from utils import get_trace_handler_gpu
 
 # Argument parser para recibir parámetros desde el script de ejecución
 parser = argparse.ArgumentParser(description="Entrenar RoBERTa en CPU con parámetros configurables.")
@@ -36,13 +36,15 @@ labels = torch.randint(0, 2, (batch_size,))  # Random labels for binary classifi
 dataset = TensorDataset(input_ids, attention_mask, labels)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
+trace_handler = get_trace_handler_gpu(model_name)
+
 # Configurar el perfilado de GPU
 profile_kwargs = ProfileKwargs(
     activities=["cuda"],  # Registrar actividades de GPU
     record_shapes=True,
     profile_memory=True,
     with_flops = True,
-    on_trace_ready = trace_handler_gpu
+    on_trace_ready = trace_handler
 )
 
 # Initialize the accelerator for CPU

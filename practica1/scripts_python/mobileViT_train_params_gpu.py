@@ -6,7 +6,7 @@ import torch.optim as optim
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 from transformers import MobileViTFeatureExtractor, MobileViTForImageClassification
-from utils import trace_handler_gpu
+from utils import get_trace_handler_gpu
 
 # Argument parser para recibir parámetros desde el script de ejecución
 parser = argparse.ArgumentParser(description="Entrenar RoBERTa en CPU con parámetros configurables.")
@@ -35,11 +35,15 @@ image_size = args.img_size  # Tamaño de imagen esperado por MobileViT
 num_channels = 3  # Imágenes RGB
 
 # Crear imágenes aleatorias y etiquetas aleatorias
-input_images = torch.rand(batch_size * 10, num_channels, image_size, image_size)  # 5 lotes de batch_size imágenes
-labels = torch.randint(0, num_classes, (batch_size * 10,))  # Etiquetas aleatorias de 10 clases
+num_images = 128  # Número total fijo de imágenes
+input_images = torch.rand(num_images, num_channels, image_size, image_size)
+labels = torch.randint(0, num_classes, (num_images,))
+
 
 dataset = TensorDataset(input_images, labels)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+
+trace_handler = get_trace_handler_gpu("mobileViT")
 
 # Configurar el perfilado de GPU
 profile_kwargs = ProfileKwargs(
@@ -47,7 +51,7 @@ profile_kwargs = ProfileKwargs(
     record_shapes=True,
     profile_memory=True,
     with_flops = True,
-    on_trace_ready = trace_handler_gpu
+    on_trace_ready = trace_handler
 )
 
 # Inicializar Accelerator para optimizar en GPU
