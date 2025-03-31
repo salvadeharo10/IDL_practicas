@@ -2,6 +2,7 @@ from accelerate import Accelerator, ProfileKwargs
 import torch
 from transformers import MobileViTFeatureExtractor, MobileViTForImageClassification
 import argparse
+import time
 
 # Argument parser para recibir parámetros desde el script de ejecución
 parser = argparse.ArgumentParser(description="Entrenar MobileViT en CPU con parámetros configurables.")
@@ -25,8 +26,10 @@ input_images = torch.rand(batch_size, num_channels, image_size, image_size)
 
 # Definir los kwargs para el perfilado en CPU
 profile_kwargs = ProfileKwargs(
-    activities=["cpu"],  # Registrar actividades de CPU
-    record_shapes=True
+    activities=["cpu"],  # Registrar solo CPU
+    record_shapes=True,
+    profile_memory=True,
+    with_flops = True
 )
 
 # Inicializar `Accelerator` para ejecutar en CPU
@@ -38,10 +41,15 @@ model = accelerator.prepare(model)
 # Mover las imágenes a la CPU
 input_images = input_images.to(accelerator.device)
 
+start_time = time.time()
 # Perfilado del modelo en CPU
 with accelerator.profile() as prof:
     with torch.no_grad():
         outputs = model(input_images)
 
+end_time = time.time()
+total_time = end_time - start_time
+
 # Imprimir resultados del perfilado
-print(prof.key_averages().table(sort_by="cpu_time_total", row_limit=10))
+print(prof.key_averages().table(sort_by="cpu_time_total", row_limit=20))
+print(f"Tiempo puro de inferencia: {total_time:.6f} segundos")

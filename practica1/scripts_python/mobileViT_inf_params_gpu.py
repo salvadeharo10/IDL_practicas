@@ -2,6 +2,7 @@ from accelerate import Accelerator, ProfileKwargs
 import torch
 from transformers import MobileViTFeatureExtractor, MobileViTForImageClassification
 import argparse
+import time
 
 # Argument parser para recibir parámetros desde el script de ejecución
 parser = argparse.ArgumentParser(description="Entrenar MobileViT en GPU con parámetros configurables.")
@@ -24,12 +25,12 @@ num_channels = 3  # Imágenes RGB
 # Crear imágenes aleatorias (valores normalizados entre 0 y 1)
 input_images = torch.rand(batch_size, num_channels, image_size, image_size)
 
-# Definir los kwargs para el perfilado en GPU
 profile_kwargs = ProfileKwargs(
-    activities=["cuda"],  # Registrar actividades de GPU
-    record_shapes=True
+    activities=["cuda"],
+    record_shapes=True,
+    profile_memory=True,
+    with_flops = True
 )
-
 # Inicializar `Accelerator` para ejecutar en GPU
 accelerator = Accelerator(cpu=False, kwargs_handlers=[profile_kwargs])
 
@@ -39,10 +40,15 @@ model = accelerator.prepare(model)
 # Mover las imágenes a la GPU
 input_images = input_images.to(accelerator.device)
 
+start_time = time.time()
 # Perfilado del modelo en GPU
 with accelerator.profile() as prof:
     with torch.no_grad():
         outputs = model(input_images)
 
+end_time = time.time()
+total_time = end_time - start_time
+
 # Imprimir resultados del perfilado
-print(prof.key_averages().table(sort_by="cpu_time_total", row_limit=10))
+print(prof.key_averages().table(sort_by="cuda_time_total", row_limit=10))
+print(f"Tiempo puro de inferencia: {total_time:.6f} segundos")
