@@ -12,7 +12,7 @@ from utils import get_trace_handler_gpu
 parser = argparse.ArgumentParser(description="Entrenar RoBERTa con Gradient Accumulation.")
 parser.add_argument("--batch_size", type=int, default=8, help="Tamaño del lote (batch size)")
 parser.add_argument("--seq_length", type=int, default=512, help="Longitud de la secuencia")
-parser.add_argument("--accum_steps", type=int, default=4, help="Número de pasos para acumular gradientes")
+parser.add_argument("--accum_steps", type=int, default=1, help="Número de pasos para acumular gradientes")
 
 args = parser.parse_args()
 
@@ -25,17 +25,17 @@ tokenizer = RobertaTokenizer.from_pretrained(model_name)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.00001)
 
-# Crear datos sintéticos
-batch_size = args.batch_size
+# Crear datos sintéticos con tamaño fijo de dataset (128 muestras)
+dataset_size = 128
 seq_length = args.seq_length
-input_ids = torch.randint(0, tokenizer.vocab_size, (batch_size, seq_length - 1))
-pad_tokens = torch.full((batch_size, 1), tokenizer.pad_token_id)
+input_ids = torch.randint(0, tokenizer.vocab_size, (dataset_size, seq_length - 1))
+pad_tokens = torch.full((dataset_size, 1), tokenizer.pad_token_id)
 input_ids = torch.cat([input_ids, pad_tokens], dim=1)
 attention_mask = (input_ids != tokenizer.pad_token_id).long()
-labels = torch.randint(0, 2, (batch_size,))
+labels = torch.randint(0, 2, (dataset_size,))
 
 dataset = TensorDataset(input_ids, attention_mask, labels)
-dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
 
 trace_handler = get_trace_handler_gpu(model_name)
 
@@ -62,7 +62,7 @@ model, optimizer, dataloader = accelerator.prepare(model, optimizer, dataloader)
 model.train()
 device = accelerator.device
 
-num_epochs = 8
+num_epochs = 3
 start_time = time.time()
 with accelerator.profile() as prof:
     for epoch in range(num_epochs):
