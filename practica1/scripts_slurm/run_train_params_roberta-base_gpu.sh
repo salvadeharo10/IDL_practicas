@@ -1,20 +1,20 @@
-#!/bin/bash   
-#SBATCH -p cola02  # Usar la cola con GPU 
-#SBATCH --gres=gpu:1  # Solicitar 1 GPU (ajustar si necesitas m·s)
-#SBATCH --mem=0     # Sin lÌmite de memoria (usar· toda la disponible)
+#!/bin/bash
+#SBATCH -p cola02  # Usar la cola con GPU
+#SBATCH --gres=gpu:1  # Solicitar 1 GPU (ajustar si necesitas m√°s)
+#SBATCH --mem=0     # Sin l√≠mite de memoria (usar√° toda la disponible)
 #SBATCH --nodes=1
-#SBATCH --ntasks=1  # Mantener una ˙nica tarea
+#SBATCH --ntasks=1  # Mantener una √∫nica tarea
 #SBATCH --job-name=TrainGPURob
-#SBATCH --output=/home/miguelvidalg/IDL/practica1/slurm_outputs/train_roberta_gpu_base_8epochs_%j.out
+#SBATCH --output=/home/miguelvidalg/IDL/practica1/slurm_outputs/train_roberta_gpu_GA32x1_%j.out
 #SBATCH --mail-type=ALL   # Notificaciones por correo en inicio, fin y fallos
 #SBATCH --mail-user=salvadorde.haroo@um.es
 
-# Par·metros de configuraciÛn 
-BATCH_SIZE=8
+# Par√°metros de configuraci√≥n
+BATCH_SIZE=32
 SEQ_LENGTH=256
- 
+
 # Ejecutar el script de Python dentro del contenedor Singularity (Apptainer)
 apptainer exec --writable-tmpfs --nv /software/singularity/Informatica/mia-idl-apptainer/mia_idl_2.2.sif \
 accelerate launch --config_file /home/miguelvidalg/IDL/practica1/scripts_python/config_gpubasebase.yaml \
-/home/miguelvidalg/IDL/practica1/scripts_python/roberta-base_train_params_gpu.py \
+/home/miguelvidalg/IDL/practica1/scripts_python/roberta-base_train_params_gpu_GA.py \
 --batch_size $BATCH_SIZE --seq_length $SEQ_LENGTH
